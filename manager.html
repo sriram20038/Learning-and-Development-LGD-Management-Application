@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learning Hub</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+        .navbar {
+            background-color: #192a3e;
+            color: white;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .navbar .title {
+            font-size: 18px;
+        }
+        .navbar .user-info {
+            display: flex;
+            align-items: center;
+        }
+        .navbar .user-info span {
+            margin-right: 10px;
+        }
+        .navbar .user-info .icon {
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background-color: #cccccc;
+        }
+        .summary {
+            display: flex;
+            justify-content: space-around;
+            padding: 20px;
+            background-color: #ffffff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .summary div {
+            text-align: center;
+            font-size: 16px;
+            color: #333;
+        }
+        .summary div .count {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+        }
+        .container {
+            margin: 20px;
+            background-color: #ffffff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        .container .header {
+            padding: 10px;
+            display: flex;
+            justify-content: flex-end;
+            background-color: #e8f4fc;
+        }
+        .container .header button {
+            padding: 10px 20px;
+            background-color: #4d91fc;
+            border: none;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        .table th, .table td {
+            padding: 15px;
+            text-align: left;
+            color: #333;
+            border-bottom: 1px solid #ddd;
+        }
+        .table th {
+            background-color: #f9f9f9;
+        }
+        .table tr:last-child td {
+            border-bottom: none;
+        }
+        .table .view-button {
+            color: white;
+            background-color: #4d91fc;
+            padding: 8px 16px;
+            border-radius: 4px;
+            text-align: center;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="navbar">
+        <div class="title">Learning Hub</div>
+        <div class="user-info">
+            <span>Hey Manager!</span>
+            <div class="icon"></div>
+        </div>
+    </div>
+
+    <div class="summary">
+        <div>
+            <div>Total Requests</div>
+            <div class="count">1</div>
+        </div>
+        <div>
+            <div>Completed Requests</div>
+            <div class="count">1</div>
+        </div>
+        <div>
+            <div>Pending Requests</div>
+            <div class="count">0</div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <button onclick="createNewRequest()">Create New Request</button>
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Training Program</th>
+                    <th>Position</th>
+                    <th>Status</th>
+                    <th>Created Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Java</td>
+                    <td>Developer</td>
+                    <td>COMPLETED</td>
+                    <td>15/9/2024</td>
+                    <td><a href="#" class="view-button">View</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        function createNewRequest() {
+            alert("Create New Request button clicked!");
+            // Add functionality here as needed
+        }
+    </script>
+
+</body>
+</html>
