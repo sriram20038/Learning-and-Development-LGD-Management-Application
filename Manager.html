@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <title>Manager</title>
+  <style>
+      /* Base styles */
+      body {
+          font-family: 'Arial', sans-serif;
+          margin: 0;
+          padding: 0;
+          transition: background-color 0.3s, color 0.3s;
+      }
+
+      /* Theme styles */
+      body.light {
+          background-color: #f0f0f0;
+          color: #333;
+      }
+
+      body.dark {
+          background-color: #1a1a1a;
+          color: #f0f0f0;
+      }
+
+      body.colorful {
+          background: linear-gradient(45deg, #ff9a9e, #fad0c4, #ffecd2);
+          color: #333;
+      }
+
+      .navbar {
+          padding: 15px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          transition: background-color 0.3s;
+      }
+
+      .navbar-left {
+        display: flex;
+        align-items: center;
+    }
+
+      .light .navbar {
+          background-color: #192a3e;
+          color: white;
+      }
+
+      .dark .navbar {
+          background-color: #2c3e50;
+          color: #ecf0f1;
+      }
+
+      .colorful .navbar {
+          background-color: rgba(25, 42, 62, 0.8);
+          color: white;
+      }
+
+      .navbar .title {
+          font-size: 24px;
+          font-weight: bold;
+      }
+
+      .navbar .user-info {
+          display: flex;
+          align-items: center;
+      }
+
+      .navbar .user-info span {
+          margin-right: 10px;
+      }
+
+      .theme-switcher {
+          margin-left: 10px;
+      }
+
+      .logout{
+        color:white;
+    }
+    .logout:hover{
+        color:red;
+    }
+
+    .bi{
+        padding:10px;
+    }
+
+      .summary {
+          display: flex;
+          justify-content: space-around;
+          padding: 20px;
+          transition: background-color 0.3s, box-shadow 0.3s;
+      }
+
+      .light .summary {
+          background-color: #ffffff;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .dark .summary {
+          background-color: #2c3e50;
+          box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1);
+      }
+
+      .colorful .summary {
+          background-color: rgba(255, 255, 255, 0.2);
+          backdrop-filter: blur(10px);
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .summary div {
+          text-align: center;
+          font-size: 16px;
+      }
+
+      .summary div .count {
+          font-size: 36px;
+          font-weight: bold;
+          margin-top: 10px;
+      }
+
+      .container {
+          margin: 20px;
+          border-radius: 8px;   
+          overflow: hidden;
+          transition: background-color 0.3s, box-shadow 0.3s;
+      }
+
+      .light .container {
+          background-color: #ffffff;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .dark .container {
+          background-color: #2c3e50;
+          box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1);
+      }
+
+      .colorful .container {
+          background-color: rgba(255, 255, 255, 0.2);
+          backdrop-filter: blur(10px);
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .container .header {
+          padding: 20px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+      }
+
+      .container .header h2 {
+          margin: 0;
+          font-size: 24px;
+      }
+
+      .container .header button {
+          padding: 10px 20px;
+          background-color: #4d91fc;
+          border: none;
+          color: white;
+          font-size: 16px;
+          cursor: pointer;
+          border-radius: 4px;
+          transition: background-color 0.3s;
+      }
+
+      .container .header button:hover {
+          background-color: #3a7bd5;
+      }
+
+      .table {
+          width: 100%;
+          border-collapse: collapse;
+      }
+
+      .table th, .table td {
+          padding: 15px;
+          text-align: left;
+          border-bottom: 1px solid #ddd;
+      }
+
+      .light .table th {
+          background-color: #f9f9f9;
+      }
+
+      .dark .table th {
+          background-color: #34495e;
+      }
+
+      .colorful .table th {
+          background-color: rgba(255, 255, 255, 0.1);
+      }
+
+      .table .view-button {
+          color: white;
+          background-color: #4d91fc;
+          padding: 8px 16px;
+          border-radius: 4px;
+          text-align: center;
+          cursor: pointer;
+          text-decoration: none;
+          font-size: 14px;
+          transition: background-color 0.3s;
+      }
+
+      .table .view-button:hover {
+          background-color: #3a7bd5;
+      }
+
+      .modal-overlay {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: rgba(0, 0, 0, 0.5);
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          display: none;
+      }
+
+      .modal {
+          background: white;
+          padding: 30px;
+          width: 400px;
+          border-radius: 8px;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      }
+
+      .modal input, .modal button {
+          width: 100%;
+          padding: 10px;
+          margin: 10px 0;
+          font-size: 16px;
+          border: 1px solid #ddd;
+          border-radius: 4px;
+      }
+
+      .modal button {
+          background-color: #4d91fc;
+          color: white;
+          border: none;
+          cursor: pointer;
+          transition: background-color 0.3s;
+      }
+
+      .modal button:hover {
+          background-color: #3a7bd5;
+      }
+
+      .modal-header {
+          font-size: 24px;
+          font-weight: bold;
+          margin-bottom: 20px;
+          text-align: center;
+      }
+
+      /* Animations */
+      @keyframes fadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
+      }
+
+      .fade-in {
+          animation: fadeIn 0.5s ease-in;
+      }
+
+      /* Responsive design */
+      @media (max-width: 768px) {
+          .summary {
+              flex-direction: column;
+          }
+
+          .summary div {
+              margin-bottom: 20px;
+          }
+
+          .container .header {
+              flex-direction: column;
+              align-items: flex-start;
+          }
+
+          .container .header button {
+              margin-top: 10px;
+          }
+
+          .table th, .table td {
+              padding: 10px;
+          }
+      }
+
+ 
+  </style>
+</head>
+<body class="light">
+  <div class="navbar">
+    <div class="navbar-left">
+        <div class="menu-icon">&#9776;</div>
+    </div>
+      <div class="title">Learning Hub</div>
+      <div class="user-info">
+          <span>Hey Manager!</span>
+
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+            <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+            <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
+          </svg>
+
+          <span class="d-inline-block" tabindex="0" data-bs-toggle="logout" title="logout">
+            <a href='home.html' class="logout">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-power" viewBox="0 0 16 16">
+              <path d="M7.5 1v7h1V1z"/>
+              <path d="M3 8.812a5 5 0 0 1 2.578-4.375l-.485-.874A6 6 0 1 0 11 3.616l-.501.865A5 5 0 1 1 3 8.812"/>
+            </svg>
+          </a>
+          </span>
+          <select id="theme-switcher" class="theme-switcher">
+              <option value="light">Light</option>
+              <option value="dark">Dark</option>
+              <option value="colorful">Colorful</option>
+          </select>
+      </div>
+  </div>
+
+  <div class="summary fade-in" style="opacity: 1;">
+      <div>
+          <div>Total Requests</div>
+          <div id="totalRequests" class="count">0</div>
+      </div>
+      <div>
+          <div>Completed Requests</div>
+          <div id="completedRequests" class="count">0</div>
+      </div>
+      <div>
+          <div>Pending Requests</div>
+          <div id="pendingRequests" class="count">0</div>
+      </div>
+  </div>
+
+  <div class="container fade-in" style="opacity: 1;">
+      <div class="header">
+          <h2>Training Requests</h2>
+          <button onclick="openForm()">Create New Request</button>
+      </div>
+      <table class="table">
+          <thead>
+              <tr>
+                  <th>Training Program</th>
+                  <th>Position</th>
+                  <th>Status</th>
+                  <th>Created Date</th>
+                  <th>Actions</th>
+              </tr>
+          </thead>
+          <tbody id="requestTableBody">
+        </tbody>
+      </table>
+  </div>
+
+  <div id="modal" class="modal-overlay">
+      <div class="modal">
+          <div class="modal-header">Create Request</div>
+          <form id="requestForm">
+              <input type="text" name="requestID" placeholder="RequestId" required>
+              <input type="text" name="employeeName" placeholder="Employee Name" required>
+              <input type="text" name="courseName" placeholder="Course Name" required="">
+              <input type="text" name="description" placeholder="Description" required="">
+              <input type="text" name="concepts" placeholder="Concepts" required="">
+              <input type="text" name="duration" placeholder="Duration" required="">
+              <input type="text" name="employeePosition" placeholder="Employee Position" required="">
+              <button type="submit">Submit Request</button>
+          </form>
+          <button onclick="closeForm()">Cancel</button>
+      </div>
+  </div>
+
+  <script>
+      // Theme switcher
+      const themeSwitcher = document.getElementById('theme-switcher');
+      themeSwitcher.addEventListener('change', (e) => {
+          document.body.className = e.target.value;
+      });
+
+      // Modal functionality
+      const modal = document.getElementById('modal');
+      const requestForm = document.getElementById('requestForm');
+      const requestTableBody = document.getElementById('requestTableBody');
+      const totalRequestsElement = document.getElementById('totalRequests');
+      const completedRequestsElement = document.getElementById('completedRequests');
+      const pendingRequestsElement = document.getElementById('pendingRequests');
+
+      function openForm() {
+          modal.style.display = 'flex';
+      }
+
+      function closeForm() {
+          modal.style.display = 'none';
+          requestForm.reset();
+      }
+
+      requestForm.addEventListener('submit', (e) => {
+          e.preventDefault();
+          const formData = new FormData(requestForm);
+          const data = Object.fromEntries(formData);
+          
+          // Add new request to the table
+          const newRow = requestTableBody.insertRow();
+          newRow.innerHTML = `
+              <td>${data.courseName}</td>
+              <td>${data.employeePosition}</td>
+              <td>PENDING</td>
+              <td>${new Date().toLocaleDateString()}</td>
+              <td><a href="#" class="view-button">View</a></td>
+          `;
+
+          // Update summary counts
+          totalRequestsElement.textContent = parseInt(totalRequestsElement.textContent) + 1;
+          pendingRequestsElement.textContent = parseInt(pendingRequestsElement.textContent) + 1;
+
+          alert('Request Submitted!');
+          closeForm();
+      });
+
+      // Close modal if clicking outside
+      modal.addEventListener('click', (e) => {
+          if (e.target === modal) {
+              closeForm();
+          }
+      });
+
+      // Add fade-in animation to elements
+      document.addEventListener('DOMContentLoaded', () => {
+          const elements = document.querySelectorAll('.fade-in');
+          elements.forEach(el => {
+              el.style.opacity = '0';
+              setTimeout(() => {
+                  el.style.opacity = '1';
+              }, 100);
+          });
+      });
+  </script>
+
+</body>
+</html>

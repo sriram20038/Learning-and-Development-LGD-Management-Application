@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Employee Dashboard</title>
+  <style>
+    /* General Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+    body {
+      background-color: #f4f4f9;
+      color: #333;
+    }
+
+    /* Navbar */
+    .navbar {
+      background-color: #007bff;
+      color: #fff;
+      padding: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .navbar-heading {
+      font-size: 1.5rem;
+    }
+    .logout-btn {
+      background-color: #ff4d4d;
+      color: #fff;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .logout-btn:hover {
+      background-color: #e63939;
+    }
+
+    /* Profile Section */
+    .profile {
+      text-align: center;
+      margin: 2rem 0;
+      background-color: #fff;
+      padding: 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .profile h2 {
+      margin-bottom: 0.5rem;
+      color: #007bff;
+    }
+    .profile p {
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+    }
+
+    /* Main Content */
+    .progress-section {
+      margin: 2rem 1rem;
+    }
+    .progress-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+    }
+    .progress-card {
+      background-color: #fff;
+      padding: 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+    .progress-card h4 {
+      color: #007bff;
+      margin-bottom: 1rem;
+    }
+    .progress-card p {
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+    }
+    .progress-card button {
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .progress-card button:hover {
+      background-color: #0056b3;
+    }
+
+    /* Feedback Form */
+    #feedback-form {
+      display: none;
+      background-color: #fff;
+      padding: 2rem;
+      margin: 2rem auto;
+      max-width: 400px;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    #feedback-form h3 {
+      color: #007bff;
+      margin-bottom: 1rem;
+    }
+    #feedback-form label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: bold;
+    }
+    #feedback-form input, #feedback-form textarea {
+      width: 100%;
+      padding: 0.5rem;
+      margin-bottom: 1rem;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+    #feedback-form button {
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    #feedback-form button:hover {
+      background-color: #0056b3;
+    }
+
+    /* Courses Section */
+    #courses-section {
+      display: none;
+      margin: 2rem;
+    }
+    .course {
+      background-color: #fff;
+      padding: 1rem;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .course h4 {
+      margin-bottom: 0.5rem;
+      color: #007bff;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <h1 class="navbar-heading">Employee Dashboard</h1>
+    <div class="navbar-right">
+    <a href="{% url 'logout' %}">
+      <button class="logout-btn">Logout</button>
+    </a>
+    </div>
+  </nav>
+
+  <!-- Profile Section -->
+  <section class="profile">
+    <h2>Welcome,employee</h2>
+  </section>
+
+  <!-- My Progress Section -->
+  <section class="progress-section">
+    <h2 style="text-align:center; margin-bottom: 1.5rem;">My Dashboard</h2>
+    <div class="progress-grid">
+      <div class="progress-card">
+        <h4>Feedback</h4>
+        <p>We value your feedback. Share your thoughts.</p>
+        <button onclick="showFeedbackForm()">Give Feedback</button>
+      </div>
+      <div class="progress-card">
+        <h4>Notifications</h4>
+        <p>Stay updated with the latest announcements.</p>
+        <button onclick="showNotifications()">View Notifications</button>
+      </div>
+      <div class="progress-card">
+        <h4>Progress</h4>
+        <p>Track your overall performance and goals.</p>
+        <button>View Progress</button>
+      </div>
+      <div class="progress-card">
+        <h4>Courses</h4>
+        <p>Access training materials and courses.</p>
+        <button onclick="showCourses()">Go to Courses</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Feedback Form -->
+  <section id="feedback-form">
+    <h3>Send Feedback</h3>
+    <label for="name">Name</label>
+    <input type="text" id="name" placeholder="Enter your name">
+    <label for="email">Email</label>
+    <input type="email" id="email" placeholder="Enter your email">
+    <label for="message">Feedback</label>
+    <textarea id="message" rows="4" placeholder="Write your feedback here"></textarea>
+    <button onclick="submitFeedback()">Submit</button>
+  </section>
+
+  <!-- Courses Section -->
+  <section id="courses-section">
+    <h2>Available Courses</h2>
+    <div class="course">
+      <h4>JavaScript Basics</h4>
+      <p>Learn the fundamentals of JavaScript programming.</p>
+    </div>
+    <div class="course">
+      <h4>Advanced CSS</h4>
+      <p>Master modern CSS techniques for web design.</p>
+    </div>
+    <div class="course">
+      <h4>React for Beginners</h4>
+      <p>A complete introduction to building web apps with React.</p>
+    </div>
+  </section>
+
+  <!-- JavaScript -->
+  <script>
+    function showFeedbackForm() {
+      document.getElementById('feedback-form').style.display = 'block';
+      document.getElementById('courses-section').style.display = 'none';
+    }
+
+    function showCourses() {
+      document.getElementById('courses-section').style.display = 'block';
+      document.getElementById('feedback-form').style.display = 'none';
+    }
+
+    function submitFeedback() {
+      alert('Thank you for your feedback!');
+      document.getElementById('feedback-form').style.display = 'none';
+    }
+
+    function showNotifications() {
+      alert('You have 3 new notifications!');
+    }
+  </script>
+</body>
+</html>
+
+

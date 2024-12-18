@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Learning Hub</title>
+  <style>
+    :root {
+      --bg-color: #f0f4f8;
+      --text-color: #333;
+      --nav-bg: linear-gradient(90deg, #3498db, #2980b9);
+      --card-bg: white;
+      --card-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      --button-bg: #3498db;
+      --button-hover: #2980b9;
+      --table-header-bg: #3498db;
+      --table-even-row: #f8f9fa;
+    }
+
+    .dark-mode {
+      --bg-color: #2c3e50;
+      --text-color: #ecf0f1;
+      --nav-bg: linear-gradient(90deg, #2c3e50, #34495e);
+      --card-bg: #34495e;
+      --card-shadow: 0 4px 6px rgba(255,255,255,0.1);
+      --button-bg: #2980b9;
+      --button-hover: #3498db;
+      --table-header-bg: #2980b9;
+      --table-even-row: #395067;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: var(--bg-color);
+      color: var(--text-color);
+      transition: all 0.3s ease;
+    }
+
+    .page {
+      display: none;
+      padding: 20px;
+      animation: fadeIn 0.5s;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 30px;
+      background: var(--nav-bg);
+      color: white;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    nav span {
+      display: flex;
+      align-items: center;
+      font-size: 1.1em;
+    }
+
+    .dashboard-metrics {
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+    }
+
+    .dashboard-metrics div {
+      margin: 10px;
+      padding: 20px;
+      background: var(--card-bg);
+      color: var(--text-color);
+      border-radius: 10px;
+      box-shadow: var(--card-shadow);
+      transition: transform 0.3s ease, background 0.3s ease, color 0.3s ease;
+      flex: 1;
+      min-width: 200px;
+      text-align: center;
+    }
+
+    .dashboard-metrics div:hover {
+      transform: translateY(-5px);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      margin-top: 20px;
+      background: var(--card-bg);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: var(--card-shadow);
+    }
+
+    table th, table td {
+      padding: 15px;
+      text-align: left;
+    }
+
+    table th {
+      background: var(--table-header-bg);
+      color: white;
+      font-weight: bold;
+    }
+
+    table tr:nth-child(even) {
+      background-color: var(--table-even-row);
+    }
+
+    button {
+      padding: 10px 20px;
+      background: var(--button-bg);
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      font-size: 1em;
+    }
+
+    button:hover {
+      background: var(--button-hover);
+    }
+
+    .course-card {
+      background: var(--card-bg);
+      border-radius: 10px;
+      padding: 20px;
+      margin: 20px auto;
+      max-width: 400px;
+      box-shadow: var(--card-shadow);
+      transition: transform 0.3s ease, background 0.3s ease, color 0.3s ease;
+    }
+
+    .course-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .course-card button {
+      margin: 5px 5px 5px 0;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal.active {
+      display: flex;
+    }
+
+    .modal-content {
+      background: var(--card-bg);
+      color: var(--text-color);
+      padding: 30px;
+      border-radius: 10px;
+      max-width: 500px;
+      width: 100%;
+      box-shadow: var(--card-shadow);
+    }
+
+    .modal-content h2 {
+      margin-top: 0;
+      color: var(--button-bg);
+    }
+
+    .modal-content input[type="date"],
+    .modal-content input[type="checkbox"] {
+      margin: 10px 0;
+    }
+
+    .modal-content input[type="date"] {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      background-color: var(--card-bg);
+      color: var(--text-color);
+    }
+
+    .modal-content label {
+      display: block;
+      margin: 10px 0 5px;
+    }
+
+    h1, h2 {
+      color: var(--text-color);
+    }
+
+    .theme-switch {
+      position: relative;
+      display: inline-block;
+      width: 60px;
+      height: 34px;
+    }
+
+    .theme-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      transition: .4s;
+      border-radius: 34px;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 26px;
+      width: 26px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      transition: .4s;
+      border-radius: 50%;
+    }
+
+    input:checked + .slider {
+      background-color: #2196F3;
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(26px);
+    }
+
+    @media (max-width: 768px) {
+      .dashboard-metrics div {
+        min-width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <!-- Dashboard -->
+    <div id="dashboard-page" class="page active">
+      <nav>
+        <span>Learning Hub</span>
+        <span>
+          Hey Admin!
+          <label class="theme-switch">
+            <input type="checkbox" id="theme-toggle">
+            <span class="slider"></span>
+          </label>
+        </span>
+      </nav>
+      <h1>Dashboard</h1>
+      <div class="dashboard-metrics">
+        <div>
+          <h3>1</h3>
+          <p>Courses Created</p>
+        </div>
+        <div>
+          <h3>1</h3>
+          <p>Employees</p>
+        </div>
+        <div>
+          <h3>1</h3>
+          <p>Requests</p>
+        </div>
+      </div>
+      <div>
+        <h2>Pending Requests</h2>
+        <table id="pending-requests">
+          <tr>
+            <th>SL No</th>
+            <th>Manager Name</th>
+            <th>Training Program</th>
+            <th>Actions</th>
+          </tr>
+        </table>
+        <h2>Completed Requests</h2>
+        <table id="completed-requests">
+          <tr>
+            <th>SL No</th>
+            <th>Manager Name</th>
+            <th>Training Program</th>
+            <th>Actions</th>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>Kartick</td>
+            <td>Java</td>
+            <td><button onclick="viewRequest(1)">View</button></td>
+          </tr>
+        </table>
+      </div>
+      <button onclick="navigateTo('courses-page')">View Courses</button>
+    </div>
+
+    <!-- Courses Page -->
+    <div id="courses-page" class="page">
+      <nav>
+        <span>Learning Hub</span>
+        <span>
+          Hey Admin!
+          <label class="theme-switch">
+            <input type="checkbox" id="theme-toggle-courses">
+            <span class="slider"></span>
+          </label>
+        </span>
+      </nav>
+      <button onclick="navigateTo('dashboard-page')">&lt; Back to Dashboard</button>
+      <h1>Courses</h1>
+      <div class="course-card">
+        <h3>Java</h3>
+        <p>Description: Basic Concepts</p>
+        <p>Duration: 2 hours</p>
+        <button onclick="showModal()">Assign Course</button>
+        <button onclick="editCourse()">Edit</button>
+        <button onclick="addLearners()">Add Learners</button>
+      </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="assign-course-modal" class="modal">
+      <div class="modal-content">
+        <h2>Assign Course to Employees</h2>
+        <p>Course Name: Java</p>
+        <p>Description: Basic Concepts</p>
+        <p>Duration: 2 hours</p>
+        <label for="deadline">Deadline:</label>
+        <input type="date" id="deadline">
+        <h3>Employees</h3>
+        <div>
+          <input type="checkbox" id="raja" name="employees" value="raja">
+          <label for="raja">Raja (raja@gmail.com)</label>
+        </div>
+        <div>
+          <input type="checkbox" id="ram" name="employees" value="ram">
+          <label for="ram">Ram (ram@gmail.com)</label>
+        </div>
+        <div>
+          <input type="checkbox" id="siva" name="employees" value="siva">
+          <label for="siva">Siva (siva@gmail.com)</label>
+        </div>
+        <button onclick="assignCourse()">Assign Course</button>
+        <button onclick="closeModal()">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function navigateTo(pageId) {
+      document.querySelectorAll('.page').forEach(page => {
+        page.classList.remove('active');
+      });
+      document.getElementById(pageId).classList.add('active');
+    }
+
+    function showModal() {
+      document.getElementById('assign-course-modal').classList.add('active');
+    }
+
+    function closeModal() {
+      document.getElementById('assign-course-modal').classList.remove('active');
+    }
+
+    function assignCourse() {
+      const deadline = document.getElementById('deadline').value;
+      const selectedEmployees = Array.from(document.querySelectorAll('input[name="employees"]:checked')).map(
+        employee => employee.value
+      );
+
+      if (!deadline || selectedEmployees.length === 0) {
+        alert('Please select a deadline and at least one employee.');
+        return;
+      }
+
+      alert(`Course assigned to: ${selectedEmployees.join(', ')} with deadline: ${deadline}`);
+      closeModal();
+    }
+
+    function viewRequest(id) {
+      alert(`Viewing request ${id}`);
+    }
+
+    function editCourse() {
+      alert('Editing course');
+    }
+
+    function addLearners() {
+      alert('Adding learners');
+    }
+
+    // Theme toggle functionality
+    function toggleTheme() {
+      document.body.classList.toggle('dark-mode');
+    }
+
+    document.getElementById('theme-toggle').addEventListener('change', toggleTheme);
+    document.getElementById('theme-toggle-courses').addEventListener('change', toggleTheme);
+
+    // Sync theme toggle state across pages
+    function syncThemeToggles() {
+      const isDarkMode = document.body.classList.contains('dark-mode');
+      document.getElementById('theme-toggle').checked = isDarkMode;
+      document.getElementById('theme-toggle-courses').checked = isDarkMode;
+    }
+
+    // Call syncThemeToggles whenever navigating between pages
+    const originalNavigateTo = window.navigateTo;
+    window.navigateTo = function(pageId) {
+      originalNavigateTo(pageId);
+      syncThemeToggles();
+    };
+  </script>
+</body>
+</html>
