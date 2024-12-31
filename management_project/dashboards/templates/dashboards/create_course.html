@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Course</title>
+    <style>
+        /* Basic Styling */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f7fa;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    width: 60%;
+    margin: 50px auto;
+    background-color: #fff;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+}
+
+form {
+    width: 100%;
+}
+
+form .form-group {
+    margin-bottom: 20px;
+}
+
+form label {
+    display: block;
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 5px;
+}
+
+form input, form select, form textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+form textarea {
+    resize: vertical;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+/* Media Query for responsiveness */
+@media (max-width: 768px) {
+    .container {
+        width: 90%;
+    }
+}
+
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>Create a New Course</h2>
+        <form method="post" enctype="multipart/form-data" id="course-form">
+            {% csrf_token %}
+            <div class="mb-4">
+                {{ form.as_p }}
+            </div>
+            <h3>Modules</h3>
+            <div id="modules-formset">
+                {{ formset.management_form }}
+                {% for form in formset %}
+                    <div class="module-form">
+                        {{ form.as_p }}
+                        <button type="button" class="btn btn-danger remove-module" style="display: none;">Remove Module</button>
+                        <hr>
+                    </div>
+                {% endfor %}
+            </div>
+            <button type="button" class="btn btn-secondary" id="add-module">Add Module</button>
+            <button type="submit" class="btn btn-primary mt-3">Create Course</button>
+        </form>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const addModuleBtn = document.getElementById('add-module');
+            const formsetDiv = document.getElementById('modules-formset');
+            const totalForms = document.getElementById('id_modules-TOTAL_FORMS'); // Django's management form field
+    
+            addModuleBtn.addEventListener('click', function () {
+                // Clone the last form and adjust indices
+                const forms = formsetDiv.getElementsByClassName('module-form');
+                const newForm = forms[forms.length - 1].cloneNode(true);
+    
+                // Update form index
+                const formRegex = new RegExp(`modules-(\\d+)-`, 'g');
+                const newIndex = parseInt(totalForms.value);
+    
+                newForm.innerHTML = newForm.innerHTML.replace(formRegex, `modules-${newIndex}-`);
+                totalForms.value = newIndex + 1;
+    
+                // Append the new form
+                formsetDiv.appendChild(newForm);
+    
+                // Show "Remove" button for all module forms
+                const removeBtns = formsetDiv.querySelectorAll('.remove-module');
+                removeBtns.forEach(btn => btn.style.display = 'block');
+            });
+    
+            // Delegate "Remove" button click event
+            formsetDiv.addEventListener('click', function (e) {
+                if (e.target.classList.contains('remove-module')) {
+                    e.target.closest('.module-form').remove();
+    
+                    // Update total forms count
+                    totalForms.value = formsetDiv.getElementsByClassName('module-form').length;
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>

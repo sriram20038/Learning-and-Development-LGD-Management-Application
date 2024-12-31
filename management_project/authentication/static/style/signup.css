@@ -1,0 +1,167 @@
+/* Root Variables */
+:root {
+    --primary-color: #4CAF50;
+    --primary-hover: #45a049;
+    --secondary-color: #2196F3;
+    --error-color: #f44336;
+    --background-color: #f3f9ff;
+    --card-background: #ffffff;
+    --text-color: #333;
+    --input-background: #fff;
+    --input-border: #ddd;
+    --box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, var(--background-color), #e6f7ff);
+    color: var(--text-color);
+    padding: 20px;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.errorlist {
+    color: red;
+    font-size: 0.9rem;
+    margin: 5px 0;
+    list-style: none;
+}
+
+.container {
+    width: 100%;
+    max-width: 500px;
+    padding: 40px;
+    background-color: var(--card-background);
+    border-radius: 15px;
+    box-shadow: var(--box-shadow);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.container:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+h2 {
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    text-align: center;
+    margin-bottom: 25px;
+    font-weight: bold;
+}
+
+.signup-form {
+    display: grid;
+    gap: 20px;
+}
+
+.form-group {
+    position: relative;
+}
+
+.signup-form label {
+    font-size: 1rem;
+    color: var(--text-color);
+    margin-bottom: 8px;
+    display: block;
+}
+
+.signup-form input,
+.signup-form select {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid var(--input-border);
+    border-radius: 8px;
+    background-color: var(--input-background);
+    font-size: 1rem;
+    color: var(--text-color);
+    transition: all 0.3s ease;
+}
+
+.signup-form input:focus,
+.signup-form select:focus {
+    outline: none;
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 6px rgba(33, 150, 243, 0.2);
+}
+
+.show-password {
+    display: flex;
+    align-items: center;
+    font-size: 0.9rem;
+    color: var(--text-color);
+}
+
+.show-password input {
+    margin-right: 8px;
+}
+
+.form-buttons {
+    display: flex;
+    justify-content: space-between;
+}
+
+.form-buttons button {
+    flex: 1;
+    margin: 0 5px;
+    padding: 12px;
+    font-size: 1rem;
+    font-weight: bold;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.form-buttons button:first-child {
+    margin-left: 0;
+}
+
+.form-buttons button:last-child {
+    margin-right: 0;
+}
+
+.signup-btn {
+    background-color: var(--primary-color);
+}
+
+.signup-btn:hover {
+    background-color: var(--primary-hover);
+}
+
+.reset-btn {
+    background-color: var(--error-color);
+}
+
+.reset-btn:hover {
+    background-color: #e53935;
+}
+
+.password-strength {
+    height: 5px;
+    margin-top: 5px;
+    border-radius: 2px;
+    background: linear-gradient(to right, #f44336, #ff9800, #4caf50);
+    width: 0%;
+    transition: width 0.3s;
+}
+
+@media (max-width: 768px) {
+    .form-buttons {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .form-buttons button {
+        margin: 0;
+    }
+}

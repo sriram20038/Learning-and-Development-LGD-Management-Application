@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LearningHub</title>
+    <link rel="stylesheet" href="{% static 'style/index.css' %}">
+</head>
+<body>
+    <header id="header">
+        <h1 id="logo">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+                <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+            </svg>
+            LearningHub
+        </h1>
+        <nav id="auth-buttons">
+            <a href="{% url 'signup' %}" class="btn">Sign Up</a>
+            <a href="{% url 'login' %}" class="btn">Login</a>
+        </nav>
+    </header>
+    
+
+    <main id="main-content">
+        <section id="problem-statement">
+            <h2>Welcome to LearningHub</h2>
+            <p>
+                <strong>Problem Statement 11:</strong> In large organizations, the Learning and Development (L&D) team plays a crucial role in upskilling employees, ensuring compliance with training requirements, and fostering a culture of continuous learning.
+            </p>
+            <p>
+                However, managing multiple training programs, tracking employee progress, and ensuring the relevance of content across diverse roles can be challenging. L&D teams often struggle with coordinating training schedules, personalizing learning paths, and gathering feedback to improve future programs.
+            </p>
+            <p>
+                Additionally, with remote and hybrid work models becoming more prevalent, traditional in-person training methods are less feasible, requiring a shift to digital solutions.
+            </p>
+        </section>
+    </main>
+    
+</body>
+</html> 

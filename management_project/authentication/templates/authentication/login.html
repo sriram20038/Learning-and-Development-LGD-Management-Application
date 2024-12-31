@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Login - LearningHub</title>
+    <link rel="stylesheet" href="{% static 'style/login.css' %}" >
+    
+</head>
+<body>
+    <div class="login-container">
+        <h1>Login</h1>
+        <form method="POST">
+            {% csrf_token %}
+            
+            <!-- Display form fields as paragraphs -->
+            {{ form.as_p }}  
+
+            <!-- Submit button for login -->
+            <input type="submit" value="Login">
+
+            <!-- Optionally, add a link for users who don't have an account -->
+            <p>Don't have an account? <a href="{% url 'signup' %}">Sign Up</a></p>
+        </form>
+    </div>
+</body>
+</html>

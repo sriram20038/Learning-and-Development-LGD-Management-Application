@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Action</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 20px 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        p {
+            font-size: 16px;
+            color: #555;
+            margin: 10px 0;
+        }
+
+        .actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .actions button {
+            padding: 10px 20px;
+            font-size: 14px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+
+        .reject {
+            background-color: #f44336;
+            color: #fff;
+        }
+
+        .reject:hover {
+            background-color: #e53935;
+        }
+
+        .create-course {
+            background-color: #2196F3;
+            color: #fff;
+        }
+        
+
+        .create-course:hover {
+            background-color: #1976d2;
+        }
+        .assign-course {
+            background-color: rgb(13, 125, 13);
+            color: #fff;
+        }
+        
+
+        .assign-course:hover {
+            background-color: #096212;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Request Details</h1>
+        <p><strong>Title:</strong> {{ title }}</p>
+        <p><strong>Description:</strong> {{ description }}</p>
+        <p><strong>Account Manager:</strong> {{ account_manager }}</p>
+
+        <form method="POST">
+            {% csrf_token %}
+            <div class="actions">
+                <button type="submit" name="action" value="create" class="create-course">Create Course</button>
+                <!-- <button type="submit" name="action" value="assign" class="assign-course">Assign existing course</button> -->
+                <button type="submit" name="action" value="reject" class="reject" onclick="return confirmReject()">Reject</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // Function to show confirmation dialog before rejecting
+        function confirmReject() {
+            return confirm("Are you sure you want to reject this request?");
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,86 @@
+/* Reset default styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body and general font settings */
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to right, #00FF9C, #7BD3EA); 
+    color: #333;
+    height: 100vh;
+}
+
+/* Header styles */
+#header {
+    background-color: #074799;
+    color: #C4FFDD;
+    padding: 20px 0;
+    text-align: center;
+    position: relative;
+}
+
+/* Logo styles */
+#logo {
+    font-size: 2em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+#logo svg {
+    width: 30px;
+    height: 30px;
+}
+
+/* Navigation (auth buttons) */
+#auth-buttons {
+    position: absolute;
+    top: 30px;
+    right: 20px;
+}
+
+#auth-buttons .btn {
+    text-decoration: none;
+    background-color: #fff;
+    color: #0066cc;
+    padding: 10px 20px;
+    margin: 0 10px;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+#auth-buttons .btn:hover {
+    background-color: #FFDE95;
+}
+
+/* Main content styling */
+#main-content {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Problem statement section */
+#problem-statement h2 {
+    font-size: 2.5em;
+    margin-bottom: 20px;
+    color: #0066cc;
+}
+
+#problem-statement p {
+    font-size: 1.1em;
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+#problem-statement strong {
+    font-weight: bold;
+}

@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            padding: 2rem;
+            background-color: #f8fafc;
+            color: #1e293b;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-size: 1.875rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: #0f172a;
+        }
+
+        .feedback-table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        .feedback-table th,
+        .feedback-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .feedback-table th {
+            background-color: #f1f5f9;
+            font-weight: 600;
+            color: #475569;
+        }
+
+        .feedback-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .feedback-table tr:hover {
+            background-color: #f8fafc;
+        }
+
+        .chart-container {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+            margin-top: 2rem;
+        }
+
+        .chart-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #0f172a;
+        }
+
+        #ratingChart {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .rating {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-weight: 500;
+            font-size: 0.875rem;
+        }
+
+        .rating-5 { background-color: #e9d5ff; color: #6b21a8; }
+        .rating-4 { background-color: #bae6fd; color: #0369a1; }
+        .rating-3 { background-color: #fef08a; color: #854d0e; }
+        .rating-2 { background-color: #fed7aa; color: #9a3412; }
+        .rating-1 { background-color: #fecaca; color: #991b1b; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Feedbacks</h1>
+        
+        <table class="feedback-table">
+            <thead>
+                <tr>
+                    <th>Feedback ID</th>
+                    <th>Feedback</th>
+                    <th>Rating</th>
+                    <th>Submitted By</th>
+                </tr>
+            </thead>
+            <tbody id="feedbackTableBody">
+                <!-- Data will be inserted here by JavaScript -->
+            </tbody>
+        </table>
+
+        <div class="chart-container">
+            <h2 class="chart-title">Feedback Rating Distribution</h2>
+            <canvas id="ratingChart"></canvas>
+        </div>
+    </div>
+
+    <script>
+        // Feedback data
+        const feedbackData = [
+            { id: 1, feedback: "good", rating: 5, submittedBy: "raja" },
+            { id: 2, feedback: "better", rating: 3, submittedBy: "ram" },
+            { id: 3, feedback: "good", rating: 3, submittedBy: "siva" }
+        ];
+
+        // Populate table
+        const tableBody = document.getElementById('feedbackTableBody');
+        feedbackData.forEach(item => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${item.id}</td>
+                <td>${item.feedback}</td>
+                <td><span class="rating rating-${item.rating}">${item.rating}</span></td>
+                <td>${item.submittedBy}</td>
+            `;
+            tableBody.appendChild(row);
+        });
+
+        // Calculate rating distribution
+        const ratingCounts = Array(5).fill(0);
+        feedbackData.forEach(item => {
+            ratingCounts[item.rating - 1]++;
+        });
+
+        // Create pie chart
+        const ctx = document.getElementById('ratingChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: ['Rating 1', 'Rating 2', 'Rating 3', 'Rating 4', 'Rating 5'],
+                datasets: [{
+                    data: ratingCounts,
+                    backgroundColor: [
+                        '#fecaca', // Rating 1 - Light Red
+                        '#fed7aa', // Rating 2 - Light Orange
+                        '#fef08a', // Rating 3 - Light Yellow
+                        '#bae6fd', // Rating 4 - Light Blue
+                        '#e9d5ff'  // Rating 5 - Light Purple
+                    ],
+                    borderColor: [
+                        '#991b1b', // Rating 1 - Dark Red
+                        '#9a3412', // Rating 2 - Dark Orange
+                        '#854d0e', // Rating 3 - Dark Yellow
+                        '#0369a1', // Rating 4 - Dark Blue
+                        '#6b21a8'  // Rating 5 - Dark Purple
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

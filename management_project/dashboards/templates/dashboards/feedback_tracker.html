@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Feedback Dashboard</title>
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #f39c12;
+            --background-color: #f0f4f8;
+            --text-color: #333;
+            --card-background: #ffffff;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 20px auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--primary-color);
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .card {
+            background: var(--card-background);
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 15px;
+            font-size: 1.2em;
+        }
+
+        .card-content {
+            padding: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table th, table td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        table th {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+
+        .chart-container {
+            height: 300px;
+            margin-top: 20px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <h1 class="fade-in">Admin Feedback Dashboard</h1>
+<div class="container">
+    <div class="card fade-in">
+        <div class="card-header">Course Feedback</div>
+        <div class="card-content">
+            <table id="courseFeedbackTable">
+                <thead>
+                    <tr>
+                        <th>Employee</th>
+                        <th>Course</th>
+                        <th>Rating</th>
+                        <th>Comments</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for feedback in course_feedback_data %}
+                    <tr>
+                        <td>{{ feedback.employee.name }}</td>
+                        <td>{{ feedback.course.name }}</td>
+                        <td>{{ feedback.rating }}</td>
+                        <td>{{ feedback.comments }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4">No feedback available.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card fade-in">
+        <div class="card-header">General Feedback</div>
+        <div class="card-content">
+            <table id="generalFeedbackTable">
+                <thead>
+                    <tr>
+                        <th>User Name</th>
+                        <th>Comments</th>
+                        <th>Submitted At</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for feedback in general_feedback_data %}
+                    <tr>
+                        <td>{{ feedback.user.name }}</td>
+                        <td>{{ feedback.comments }}</td>
+                        <td>{{ feedback.submitted_at }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="3">No general feedback available.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+     <!-- <div class="card fade-in">
+            <div class="card-header">Course Feedback Rating Distribution</div>
+            <div class="card-content">
+                <div class="chart-container">
+                    <canvas id="feedbackChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>  -->
+
+    <script>
+        let rowsVisible = true;
+    
+        function toggleRows() {
+            const rows = document.querySelectorAll('#feedbackRows tr');
+    
+            // Toggle visibility for all rows
+            rows.forEach(row => {
+                row.style.display = rowsVisible ? 'none' : ''; // Hide or show rows
+            });
+    
+            // Toggle the state
+            rowsVisible = !rowsVisible;
+        }
+    
+        // Chart Script
+        const rows = document.querySelectorAll('.feedback-table tbody tr');
+        const ratingCounts = [0, 0, 0, 0, 0]; // Counts for ratings 1 to 5
+    
+        rows.forEach(row => {
+            const ratingCell = row.querySelector('.rating');
+            if (ratingCell) {
+                const ratingValue = parseInt(ratingCell.textContent.trim());
+                if (!isNaN(ratingValue) && ratingValue >= 1 && ratingValue <= 5) {
+                    ratingCounts[ratingValue - 1]++;
+                }
+            }
+        });
+    
+        const ctx = document.getElementById('ratingChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: ['Rating 1', 'Rating 2', 'Rating 3', 'Rating 4', 'Rating 5'],
+                datasets: [{
+                    data: ratingCounts,
+                    backgroundColor: ['#fecaca', '#fed7aa', '#fef08a', '#bae6fd', '#e9d5ff'],
+                    borderColor: ['#991b1b', '#9a3412', '#854d0e', '#0369a1', '#6b21a8'],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const total = ratingCounts.reduce((a, b) => a + b, 0);
+                                const value = context.raw;
+                                const percentage = ((value / total) * 100).toFixed(2) + '%';
+                                return `${context.label}: ${value} (${percentage})`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+    
+</body>
+</html>

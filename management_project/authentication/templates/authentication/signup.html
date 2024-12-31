@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - LearningHub</title>
+    <link rel="stylesheet" href="{% static 'style/signup.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h2>Sign Up</h2>
+        <form method="POST" class="signup-form">
+            {% csrf_token %}
+            {{ form.as_p }}
+    
+            <div class="show-password">
+                <input type="checkbox" id="showPassword" onclick="togglePassword()"> Show Password
+            </div>
+    
+            <div class="form-buttons">
+                <button type="submit" class="signup-btn">Sign Up</button>
+                <button type="reset" class="reset-btn">Reset</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        function togglePassword() {
+            var passwordInput = document.querySelector('input[name="password"]');
+            var confirm_password=document.querySelector('input[name="confirm_password"]');
+            if (document.getElementById('showPassword').checked) {
+                passwordInput.type = 'text';
+                confirm_password.type='text';
+            } else {
+                passwordInput.type = 'password';
+                confirm_password.type='password';
+            }
+        }
+    </script>
+</body>
+</html>
