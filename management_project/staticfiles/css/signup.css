@@ -1,0 +1,195 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+:root {
+    --primary-color: #4CAF50;
+    --primary-hover: #45a049;
+    --secondary-color: #2196F3;
+    --error-color: #f44336;
+    --background-color: #f3f9ff;
+    --card-background: #ffffff;
+    --text-color: #333;
+    --input-background: #fff;
+    --input-border: #ddd;
+    --box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #c3e8ff, #a5d6ff, #87c4ff);
+    color: var(--text-color);
+    padding: 20px;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-size: 400% 400%;
+    animation: gradientBG 15s ease infinite;
+}
+
+@keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.errorlist {
+    color: var(--error-color);
+    font-size: 0.9rem;
+    margin: 5px 0;
+    list-style: none;
+    background-color: rgba(244, 67, 54, 0.1);
+    padding: 10px;
+    border-radius: 8px;
+    border-left: 4px solid var(--error-color);
+}
+
+.container {
+    width: 100%;
+    max-width: 500px;
+    padding: 40px;
+    background-color: var(--card-background);
+    border-radius: 20px;
+    box-shadow: var(--box-shadow);
+    transition: transform 0.3s, box-shadow 0.3s;
+    backdrop-filter: blur(10px);
+    background-color: rgba(255, 255, 255, 0.8);
+}
+
+.container:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+}
+
+h2 {
+    font-size: 2.8rem;
+    color: var(--primary-color);
+    text-align: center;
+    margin-bottom: 30px;
+    font-weight: 700;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.signup-form {
+    display: grid;
+    gap: 25px;
+}
+
+.form-group {
+    position: relative;
+}
+
+.signup-form label {
+    font-size: 1.1rem;
+    color: var(--text-color);
+    margin-bottom: 10px;
+    display: block;
+    font-weight: 600;
+}
+
+.signup-form input,
+.signup-form select {
+    width: 100%;
+    padding: 15px;
+    border: 2px solid var(--input-border);
+    border-radius: 12px;
+    background-color: var(--input-background);
+    font-size: 1rem;
+    color: var(--text-color);
+    transition: all 0.3s ease;
+}
+
+.signup-form input:focus,
+.signup-form select:focus {
+    outline: none;
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 10px rgba(33, 150, 243, 0.3);
+    transform: translateY(-2px);
+}
+
+.show-password {
+    display: flex;
+    align-items: center;
+    font-size: 1rem;
+    color: var(--text-color);
+    margin-top: 10px;
+}
+
+.show-password input {
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.form-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.form-buttons button {
+    flex: 1;
+    margin: 0 10px;
+    padding: 15px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.signup-btn {
+    background: linear-gradient(45deg, var(--primary-color), #66bb6a);
+}
+
+.signup-btn:hover {
+    background: linear-gradient(45deg, #66bb6a, var(--primary-color));
+    box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4);
+    transform: translateY(-3px);
+}
+
+.reset-btn {
+    background: linear-gradient(45deg, var(--error-color), #ff7043);
+}
+
+.reset-btn:hover {
+    background: linear-gradient(45deg, #ff7043, var(--error-color));
+    box-shadow: 0 5px 15px rgba(244, 67, 54, 0.4);
+    transform: translateY(-3px);
+}
+
+.password-strength {
+    height: 6px;
+    margin-top: 8px;
+    border-radius: 3px;
+    background: linear-gradient(to right, #f44336, #ff9800, #4caf50);
+    width: 0%;
+    transition: width 0.5s;
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 30px;
+    }
+
+    h2 {
+        font-size: 2.4rem;
+    }
+
+    .form-buttons {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .form-buttons button {
+        margin: 0;
+    }
+}

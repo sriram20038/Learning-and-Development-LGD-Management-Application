@@ -1,0 +1,259 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Learning Hub</title>
+  <link rel="stylesheet" href="{% static 'css/admin.css' %}?v=1.0">
+  
+</head>
+<body>
+  <div id="app">
+    <!-- Dashboard -->
+    <div id="dashboard-page" class="page active">
+      <nav>
+        <span>
+          <a href="{% url 'create_course' user_id %}"><button>create course</button></a>
+          <a href="{% url 'employee_progress' %}"><button>Employee Progress Tracker</button></a>
+          <a href="{% url 'feedback_tracker' user_id %}"><button>Feedback Tracker</button></a>
+        </span>
+        <span>
+          Hey {{admin.name}}!
+          
+
+          <label class="theme-switch">
+            <input type="checkbox" id="theme-toggle">
+            <span class="slider"></span>
+          </label>
+        </span>
+
+        <a href="{% url 'home'%}" class="logout" style="background-color: white;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="red" class="bi bi-power" viewBox="0 0 16 16">
+            <path d="M7.5 1v7h1V1z"/>
+            <path d="M3 8.812a5 5 0 0 1 2.578-4.375l-.485-.874A6 6 0 1 0 11 3.616l-.501.865A5 5 0 1 1 3 8.812"/>
+          </svg>
+        </a>
+
+
+      </nav>
+      <h1>Dashboard</h1>
+      <div class="dashboard-metrics">
+        <div>
+          <h3>{{courses_count}}</h3>
+          <p>Courses Created</p>
+        </div>
+        <div>
+          <h3>{{employees_count}}</h3>
+          <p>Employees</p>
+        </div>
+        <div>
+          <h3>{{pending_count}}</h3>
+          <p>Pending Requests</p>
+        </div>
+      </div>
+      <div>
+        <h2>Pending Requests</h2>
+        <table id="pending-requests">
+          <thead>
+              <tr>
+                <th>title</th>
+                <th>description</th>
+                <th>created_by</th>
+                <th>Actions</th>
+              </tr>
+        </thead>
+        <tbody>
+          {% for item in pending_requests %}
+            <tr>
+                <td>{{ item.title }}</td>
+                <td>{{ item.description }}</td>
+                <td>{{item.account_manager}}</td>
+                <td><a href="{% url 'admin_action' user_id=user_id request_id=item.request_id %}"><button>View</button></a></td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4">No data available</td>
+            </tr>
+
+            {% endfor %}
+            
+        </tbody>
+        </table>
+        <h2>Existing Courses</h2>
+        <table id="existing-courses">
+          <thead>
+              <tr>
+                  <th>Title</th>
+                  <th>Description</th>
+                  <th>Created By</th>
+                  <th>View Course</th>
+                  <th>Delete</th>
+              </tr>
+          </thead>
+          <tbody>
+              {% for item in courses %}
+              <tr>
+                  <td>{{ item.title }}</td>
+                  <td>{{ item.description }}</td>
+                  <td>{{ item.created_by }}</td>
+                  <td><a href="{% url 'view_course' course_id=item.course_id user_id=user_id %}"><button>View</button></a></td>
+                  <td>
+                      <form method="POST" action="{% url 'Admin' user_id=admin.id %}">
+                          {% csrf_token %}
+                          <input type="hidden" name="course_id" value="{{ item.course_id }}">
+                          <button type="submit" name="delete_course" style="background-color: rgb(202, 26, 26);">Delete</button>
+                      </form>
+                  </td>
+              </tr>
+              {% empty %}
+              <tr>
+                  <td colspan="4">No data available</td>
+              </tr>
+
+              {% endfor %}
+          </tbody>
+      </table>
+      
+      <!-- </div>
+      <button onclick="navigateTo('courses-page')">Add Employee</button>
+    </div> -->
+
+    <!-- Courses Page -->
+    <div id="courses-page" class="page">
+      <nav>
+        <span>Learning Hub</span>
+        <span>
+          Hey Admin!
+          <label class="theme-switch">
+            <input type="checkbox" id="theme-toggle-courses">
+            <span class="slider"></span>
+          </label>
+        </span>
+      </nav>
+      <button onclick="navigateTo('dashboard-page')">&lt; Back to Dashboard</button>
+      <h1>Courses</h1>
+      <div class="course-card">
+        <h3>Python</h3>
+        <p>Description: Basic Concepts</p>
+        <p>Duration: 10 hours</p>
+        <button onclick="showModal()">View</button>
+        <button onclick="editCourse()">Edit</button>
+        <button onclick="addLearners()">Add Learners</button>
+      </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="assign-course-modal" class="modal">
+      <div class="modal-content">
+        <h2>Assign Course to Employees</h2>
+        <p>Course Name: Python</p>
+        <p>Description: Basic Concepts</p>
+        <p>Duration: 10 hours</p>
+        <label for="deadline">Deadline:</label>
+        <input type="date" id="deadline">
+        <h3>Employees</h3>
+        <div>
+          <input type="checkbox" id="raja" name="employees" value="raja">
+          <label for="raja">Raja (raja@gmail.com)</label>
+        </div>
+        <div>
+          <input type="checkbox" id="ram" name="employees" value="ram">
+          <label for="ram">Ram (ram@gmail.com)</label>
+        </div>
+        <div>
+          <input type="checkbox" id="siva" name="employees" value="siva">
+          <label for="siva">Siva (siva@gmail.com)</label>
+        </div>
+        <button onclick="assignCourse()">Assign Course</button>
+        <button onclick="closeModal()">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function confirmDelete() {
+        return confirm("Are you sure you want to delete this course?");
+    }
+
+    function navigateTo(pageId) {
+      document.querySelectorAll('.page').forEach(page => {
+        page.classList.remove('active');
+      });
+      document.getElementById(pageId).classList.add('active');
+    }
+
+    function showModal() {
+      document.getElementById('assign-course-modal').classList.add('active');
+    }
+
+    function closeModal() {
+      document.getElementById('assign-course-modal').classList.remove('active');
+    }
+
+    function assignCourse() {
+      const deadline = document.getElementById('deadline').value;
+      const selectedEmployees = Array.from(document.querySelectorAll('input[name="employees"]:checked')).map(
+        employee => employee.value
+      );
+
+      if (!deadline || selectedEmployees.length === 0) {
+        alert('Please select a deadline and at least one employee.');
+        return;
+      }
+
+      alert(`Course assigned to: ${selectedEmployees.join(', ')} with deadline: ${deadline}`);
+      closeModal();
+    }
+
+    function viewRequest(id) {
+      alert(`Viewing request ${id}`);
+    }
+
+    function editCourse() {
+      alert('Editing course');
+            window.location.href = 'manager.html';
+            return false;
+    }
+
+    function employeetracking() {
+      alert('employee tracking');
+            window.location.href = 'employee_tracking.html';
+            return false;
+    }
+
+    function employeefeedback() {
+      alert('feedback tracking');
+            window.location.href = 'feedback.html';
+            return false;
+    }
+
+
+    function addLearners() {
+      alert('Adding learners');
+    }
+
+    // Theme toggle functionality
+    function toggleTheme() {
+      document.body.classList.toggle('dark-mode');
+    }
+
+    document.getElementById('theme-toggle').addEventListener('change', toggleTheme);
+    document.getElementById('theme-toggle-courses').addEventListener('change', toggleTheme);
+
+    // Sync theme toggle state across pages
+    function syncThemeToggles() {
+      const isDarkMode = document.body.classList.contains('dark-mode');
+      document.getElementById('theme-toggle').checked = isDarkMode;
+      document.getElementById('theme-toggle-courses').checked = isDarkMode;
+    }
+
+    // Call syncThemeToggles whenever navigating between pages
+    const originalNavigateTo = window.navigateTo;
+    window.navigateTo = function(pageId) {
+      originalNavigateTo(pageId);
+      syncThemeToggles();
+    };
+  </script>
+</body>
+</html>

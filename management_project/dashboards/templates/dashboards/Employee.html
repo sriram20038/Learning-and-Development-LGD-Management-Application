@@ -1,0 +1,146 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Employee Dashboard</title>
+  <link rel="stylesheet" href="{% static 'css/employee.css' %}?v=1.0">
+</head>
+<body>
+  <nav class="navbar">
+    <h1 class="navbar-heading">Employee Dashboard</h1>
+    <div class="navbar-right">
+      <label class="theme-switch">
+        <input type="checkbox" id="theme-toggle">
+        <span class="slider"></span>
+      </label>
+      <a  href="{% url 'home'%}"><button class="logout-btn">Logout</button></a>
+    </div>
+  </nav>
+
+  <section class="profile">
+    <h2>Welcome, <span id="employee-name">{{employee.name}}</span></h2>
+    <!-- <p>Position: <span id="employee-role">Software Engineer</span></p> -->
+    <p>Email: <span id="employee-email">{{employee.email}}</span></p>
+  </section>
+
+  <section class="progress-section">
+    <h2 style="text-align:center; margin-bottom: 1.5rem;">My Progress</h2>
+    <div class="progress-grid">
+
+
+
+      <div class="progress-card">
+        <h4>Feedback</h4>
+        <p>We value your feedback. Share your thoughts to improve.</p>
+        <a href="{% url 'general_feedback' employee.id %}"><button>Send Feedback</button></a>
+      </div>
+
+
+      <div class="progress-card">
+        <h4>Notifications</h4>
+        <p>Stay updated with the latest announcements and updates.</p>
+        <a href="{% url 'notifications' employee.id %}">
+            <button>View Notifications</button>
+        </a>
+    
+        <!-- Red Badge for Unread Notifications -->
+        <div class="notification-badge">
+            {{ unread_notifications_count }}
+        </div>
+    </div>
+    
+
+      <div class="progress-card">
+        <h4>Progress</h4>
+        <p>Track your overall progress in training and projects.</p>
+        <button onclick="toggleSection('progress-section')">View Progress</button>
+      </div>
+      <div class="progress-card">
+        <h4>Courses</h4>
+        <p>Access your training materials and courses here.</p>
+        <button onclick="toggleSection('courses-section')">Go to Courses</button>
+      </div>
+    </div>
+  </section>
+
+
+
+
+  <section id="progress-section" class="dashboard-section">
+    <h2>Progress</h2>
+    {% for progress in course_progress %}
+    <div class="progress-item">
+        <h3>{{ progress.course.title }}</h3>
+        <p>Modules Completed: {{ progress.completed_modules }}/{{ progress.total_modules }}</p>
+        <div class="progress-bar">
+            <div class="progress-fill" style="width: {{ progress.progress_percentage }}%;">
+                {{ progress.progress_percentage }}%
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <p>No course progress available.</p>
+    {% endfor %}
+</section>
+
+
+
+
+<section id="courses-section" class="dashboard-section">
+    <h2>Courses</h2>
+    <ul id="courses-list">
+        {% for course in courses %}
+        <li>
+            <h3>{{ course.title }}</h3>
+            <p>Description: {{ course.description }}</p>
+            <a href="{% url 'view_course' course_id=course.course_id user_id=employee.id %}" ><button class="resume-course" >View Course</button></a>
+            <a href="{% url 'feedback_form' course_id=course.course_id user_id=employee.id %}" ><button class="course-feedback">Give feedback</button></a>
+        </li>
+        {% endfor %}
+    </ul>
+</section>
+
+
+
+
+
+
+  <script>
+    function toggleSection(sectionId) {
+      const sections = document.querySelectorAll('.dashboard-section');
+      sections.forEach(section => {
+        if (section.id === sectionId) {
+          section.style.display = section.style.display === 'none' ? 'block' : 'none';
+        } else {
+          section.style.display = 'none';
+        }
+      });
+    }
+
+    function toggleTheme() {
+      document.body.classList.toggle('dark-mode');
+    }
+
+    document.getElementById('theme-toggle').addEventListener('change', toggleTheme);
+
+    // Feedback form submission
+    document.getElementById('feedback-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const feedbackText = document.getElementById('feedback-text').value;
+      const responseElement = document.getElementById('feedback-response');
+      if (feedbackText.trim() !== '') {
+        responseElement.textContent = 'Thank you for your feedback!';
+        responseElement.style.color = 'green';
+        document.getElementById('feedback-text').value = '';
+      } else {
+        responseElement.textContent = 'Please enter your feedback before submitting.';
+        responseElement.style.color = 'red';
+      }
+    });
+
+  </script>
+</body>
+</html>
+

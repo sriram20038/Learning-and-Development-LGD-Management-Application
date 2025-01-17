@@ -1,0 +1,74 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Course</title>
+    <link rel="stylesheet" href="{% static 'css/create_course.css' %}?v=1.0">
+    
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>Create a New Course</h2>
+        <form method="post" enctype="multipart/form-data" id="course-form">
+            {% csrf_token %}
+            <div class="mb-4">
+                {{ form.as_p }}
+            </div>
+            <h3>Modules</h3>
+            <div id="modules-formset">
+                {{ formset.management_form }}
+                {% for form in formset %}
+                    <div class="module-form">
+                        {{ form.as_p }}
+                        <button type="button" class="btn btn-danger remove-module" style="display: none;">Remove Module</button>
+                        <hr>
+                    </div>
+                {% endfor %}
+            </div>
+            <button type="button" class="btn btn-secondary" id="add-module">Add Module</button>
+            <button type="submit" class="btn btn-primary mt-3">Create Course</button>
+        </form>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const addModuleBtn = document.getElementById('add-module');
+            const formsetDiv = document.getElementById('modules-formset');
+            const totalForms = document.getElementById('id_modules-TOTAL_FORMS'); // Django's management form field
+    
+            addModuleBtn.addEventListener('click', function () {
+                // Clone the last form and adjust indices
+                const forms = formsetDiv.getElementsByClassName('module-form');
+                const newForm = forms[forms.length - 1].cloneNode(true);
+    
+                // Update form index
+                const formRegex = new RegExp(`modules-(\\d+)-`, 'g');
+                const newIndex = parseInt(totalForms.value);
+    
+                newForm.innerHTML = newForm.innerHTML.replace(formRegex, `modules-${newIndex}-`);
+                totalForms.value = newIndex + 1;
+    
+                // Append the new form
+                formsetDiv.appendChild(newForm);
+    
+                // Show "Remove" button for all module forms
+                const removeBtns = formsetDiv.querySelectorAll('.remove-module');
+                removeBtns.forEach(btn => btn.style.display = 'block');
+            });
+    
+            // Delegate "Remove" button click event
+            formsetDiv.addEventListener('click', function (e) {
+                if (e.target.classList.contains('remove-module')) {
+                    e.target.closest('.module-form').remove();
+    
+                    // Update total forms count
+                    totalForms.value = formsetDiv.getElementsByClassName('module-form').length;
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>

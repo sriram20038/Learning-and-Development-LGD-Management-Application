@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Courses</title>
+    <style>
+        /* Reset styles */
+        body, h2, h3, p, ul, li, a {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Body styling */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        /* Section styling */
+        #courses-section {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Section title styling */
+        #courses-section h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #444;
+        }
+
+        /* List styling */
+        #courses-list {
+            list-style: none;
+        }
+
+        /* List item styling */
+        .course-item {
+            background: #fafafa;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            padding: 20px;
+            transition: box-shadow 0.3s ease;
+        }
+
+        .course-item:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Description styling */
+        .description {
+            margin: 10px 0 20px 0;
+            color: #555;
+        }
+
+        /* Buttons container styling */
+        .course-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        /* Button styling */
+        .btn {
+            display: inline-block;
+            text-decoration: none;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .view-btn {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        .view-btn:hover {
+            background-color: #0056b3;
+        }
+
+        .feedback-btn {
+            background-color: #28a745;
+            color: #fff;
+        }
+
+        .feedback-btn:hover {
+            background-color: #1e7e34;
+        }
+    </style>
+</head>
+<body>
+    <section id="courses-section" class="dashboard-section">
+        <h2>Courses</h2>
+        <ul id="courses-list">
+            {% for course in courses %}
+            <li class="course-item">
+                <h3>{{ course.title }}</h3>
+                <p class="description">Description: {{ course.description }}</p>
+                <div class="course-actions">
+                    <a href="{% url 'view_course' course_id=course.course_id user_id=employee.id %}" class="btn view-btn">View Course</a>
+                    <a href="{% url 'feedback_form' course_id=course.course_id user_id=employee.id %}" class="btn feedback-btn">Give Feedback</a>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+    </section>
+</body>
+</html>

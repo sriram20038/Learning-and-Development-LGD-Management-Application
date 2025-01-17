@@ -1,0 +1,146 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Feedback Dashboard</title>
+    <link rel="stylesheet" href="{% static 'css/feedback_tracker.css' %}?v=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <h1 class="fade-in">Admin Feedback Dashboard</h1>
+<div class="container">
+    <div class="card fade-in">
+        <div class="card-header">Course Feedback</div>
+        <div class="card-content">
+            <button id="toggleCourseRows" class="toggle-button" onclick="toggleRows('toggleCourseRows', 'courseFeedbackTable')">Hide Rows</button>
+            <table id="courseFeedbackTable">
+                <thead>
+                    <tr>
+                        <th>Employee</th>
+                        <th>Course</th>
+                        <th>Rating</th>
+                        <th>Comments</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for feedback in course_feedback_data %}
+                    <tr>
+                        <td>{{ feedback.employee.name }}</td>
+                        <td>{{ feedback.course.title }}</td>
+                        <td>{{ feedback.rating }}</td>
+                        <td>{{ feedback.comments }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4">No feedback available.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card fade-in">
+        <div class="card-header">General Feedback</div>
+        <div class="card-content">
+            <button id="toggleGeneralRows" class="toggle-button" onclick="toggleRows('toggleGeneralRows', 'generalFeedbackTable')">Hide Rows</button>
+            <table id="generalFeedbackTable">
+                <thead>
+                    <tr>
+                        <th>User Name</th>
+                        <th>Comments</th>
+                        <th>Submitted At</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for feedback in general_feedback_data %}
+                    <tr>
+                        <td>{{ feedback.user.name }}</td>
+                        <td>{{ feedback.comments }}</td>
+                        <td>{{ feedback.submitted_at }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="3">No general feedback available.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="centered-wrapper">
+     <div class="card fade-in">
+            <div class="card-header">Course Feedback Rating Distribution</div>
+            <div class="card-content">
+                <div class="chart-container">
+                    <canvas id="feedbackChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div> 
+</div> 
+
+    <script>
+        // Backend data passed dynamically
+        const ratingCounts = [
+        {{ course_feedback_chart_data.1|default:0 }},
+        {{ course_feedback_chart_data.2|default:0 }},
+        {{ course_feedback_chart_data.3|default:0 }},
+        {{ course_feedback_chart_data.4|default:0 }},
+        {{ course_feedback_chart_data.5|default:0 }}
+    ];
+    
+        // Chart Script
+        const ctx = document.getElementById('feedbackChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: ['Rating 1', 'Rating 2', 'Rating 3', 'Rating 4', 'Rating 5'],
+                datasets: [{
+                    data: ratingCounts,
+                    backgroundColor: ['#fecaca', '#fed7aa', '#fef08a', '#bae6fd', '#e9d5ff'],
+                    borderColor: ['#991b1b', '#9a3412', '#854d0e', '#0369a1', '#6b21a8'],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const total = ratingCounts.reduce((a, b) => a + b, 0);
+                                const value = context.raw;
+                                const percentage = ((value / total) * 100).toFixed(2) + '%';
+                                return `${context.label}: ${value} (${percentage})`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        function toggleRows(buttonId, tableId) {
+            const button = document.getElementById(buttonId);
+            const table = document.getElementById(tableId);
+            const rows = table.querySelectorAll('tbody tr');
+
+            if (rows.length > 0) {
+                // Toggle visibility
+                const isHidden = rows[0].style.display === 'none';
+                rows.forEach(row => row.style.display = isHidden ? '' : 'none');
+
+                // Update button text
+                button.textContent = isHidden ? 'Hide Rows' : 'Show Rows';
+            }
+        }
+    </script>
+    
+</body>
+</html>

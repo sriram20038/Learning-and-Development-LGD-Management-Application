@@ -1,0 +1,34 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Action</title>
+    <link rel="stylesheet" href="{% static 'css/admin_action.css' %}?v=1.0">
+</head>
+<body>
+    <div class="container">
+        <h1>Request Details</h1>
+        <p><strong>Title:</strong> {{ title }}</p>
+        <p><strong>Description:</strong> {{ description }}</p>
+        <p><strong>Account Manager:</strong> {{ account_manager }}</p>
+
+        <form method="POST">
+            {% csrf_token %}
+            <div class="actions">
+                <button type="submit" name="action" value="create" class="create-course">Create Course</button>
+                <!-- <button type="submit" name="action" value="assign" class="assign-course">Assign existing course</button> -->
+                <button type="submit" name="action" value="reject" class="reject" onclick="return confirmReject()">Reject</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // Function to show confirmation dialog before rejecting
+        function confirmReject() {
+            return confirm("Are you sure you want to reject this request?");
+        }
+    </script>
+</body>
+</html>

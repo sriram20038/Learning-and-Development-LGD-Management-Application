@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Login - LearningHub</title>
+    <link rel="stylesheet" href="{% static 'css/login.css' %}?v=1.0">
+    
+</head>
+<body>
+    <div class="login-container">
+        <h1>Login</h1>
+        <form id="loginForm" method="POST" novalidate>
+            {% csrf_token %}
+            <!-- Email field -->
+            <div>
+                {{ form.email.label_tag }}
+                {{ form.email }}
+                {% if form.email.errors %}
+                    <div class="error-message">
+                        {{ form.email.errors|striptags }}
+                    </div>
+                {% endif %}
+            </div>
+        
+            <!-- Password field -->
+            <div>
+                {{ form.password.label_tag }}
+                {{ form.password }}
+                {% if form.password.errors %}
+                    <div class="error-message">
+                        {{ form.password.errors|striptags }}
+                    </div>
+                {% endif %}
+            </div>
+        
+            <!-- Show password -->
+            <div class="show-password">
+                <input type="checkbox" id="showPassword" onclick="togglePassword()"> Show Password
+            </div><br>
+        
+            <!-- Submit button -->
+            <button type="submit">Login</button>
+        
+            <!-- Sign up link -->
+            <p>Don't have an account? <a href="{% url 'signup' %}">Sign Up</a></p>
+        </form>
+        
+    </div>
+
+    <script>
+        function togglePassword() {
+            const passwordInput = document.querySelector('input[name="password"]');
+            if (document.getElementById('showPassword').checked) {
+                passwordInput.type = 'text';
+            } else {
+                passwordInput.type = 'password';
+            }
+        }
+
+        // Validate form on submission
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            let isValid = true;
+
+            // Clear previous error messages
+            document.getElementById('emailError').textContent = '';
+            document.getElementById('passwordError').textContent = '';
+
+            // Validate email
+            const email = document.getElementById('email').value;
+            if (!email) {
+                document.getElementById('emailError').textContent = 'Email is required.';
+                isValid = false;
+            } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                document.getElementById('emailError').textContent = 'Enter a valid email address.';
+                isValid = false;
+            }
+
+            // Validate password
+            const password = document.getElementById('password').value;
+            if (!password) {
+                document.getElementById('passwordError').textContent = 'Password is required.';
+                isValid = false;
+            }
+
+            // Prevent form submission if validation fails
+            if (!isValid) {
+                event.preventDefault();
+            }
+        });
+    </script>
+</body>
+</html>

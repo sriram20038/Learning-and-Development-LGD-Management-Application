@@ -1,0 +1,115 @@
+<html>
+    <head>
+        <title>Employee Progress</title>
+        <style>
+            /* Reset styles */
+            body, h2, h3, p, div {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+        
+            /* Body styling */
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #f4f4f9;
+                color: #333;
+                line-height: 1.6;
+                padding: 20px;
+            }
+        
+            /* Section styling */
+            #progress-section {
+                background: #fff;
+                padding: 20px;
+                border-radius: 8px;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                max-width: 800px;
+                margin: 0 auto;
+            }
+        
+            /* Section title styling */
+            #progress-section h2 {
+                text-align: center;
+                margin-bottom: 20px;
+                color: #444;
+            }
+        
+            /* Progress item styling */
+            .progress-item {
+                background: #fafafa;
+                border: 1px solid #ddd;
+                border-radius: 8px;
+                margin-bottom: 20px;
+                padding: 20px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+                transition: box-shadow 0.3s ease;
+            }
+        
+            .progress-item:hover {
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            }
+        
+            /* Course title styling */
+            .progress-item h3 {
+                color: #333;
+                margin-bottom: 10px;
+            }
+        
+            /* Progress text styling */
+            .progress-item p {
+                color: #555;
+                margin-bottom: 15px;
+            }
+        
+            /* Progress bar container */
+            .progress-bar {
+                width: 100%;
+                background-color: #e9ecef;
+                border-radius: 10px;
+                overflow: hidden;
+                height: 20px;
+                position: relative;
+            }
+        
+            /* Progress fill styling */
+            .progress-fill {
+                height: 100%;
+                background-color: #28a745;
+                color: #fff;
+                text-align: center;
+                line-height: 20px;
+                font-size: 12px;
+                font-weight: bold;
+                transition: width 0.4s ease;
+                border-radius: 10px 0 0 10px; /* Rounded edges for progress */
+            }
+        
+            /* Empty state styling */
+            #progress-section p {
+                text-align: center;
+                color: #777;
+                font-style: italic;
+            }
+        </style>
+        
+    </head>
+    <body>
+        <section id="progress-section" class="dashboard-section">
+            <h2>Progress</h2>
+            {% for progress in course_progress %}
+            <div class="progress-item">
+                <h3>{{ progress.course.title }}</h3>
+                <p>Modules Completed: {{ progress.completed_modules }} / {{ progress.total_modules }}</p>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: {{ progress.progress_percentage }}%; ">
+                        {{ progress.progress_percentage }}%
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <p>No course progress available.</p>
+            {% endfor %}
+        </section>
+    </body>
+</html>

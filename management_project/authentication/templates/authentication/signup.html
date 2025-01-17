@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Sign Up - LearningHub</title>
+    <link rel="stylesheet" href="{% static 'css/signup.css' %}?v=1.0">
+</head>
+<body>
+    <div class="container">
+        <h1>Sign Up</h1>
+        <form class="signup-form" method="POST" novalidate>
+            {% csrf_token %}
+
+            <!-- Name field -->
+            <div>
+                {{ form.name.label_tag }}
+                {{ form.name }}
+                {% if form.name.errors %}
+                    <div class="error-message">
+                        {{ form.name.errors|striptags }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- Email field -->
+            <div>
+                {{ form.email.label_tag }}
+                {{ form.email }}
+                {% if form.email.errors %}
+                    <div class="error-message">
+                        {{ form.email.errors|striptags }}
+                    </div>
+                {% endif %}
+            </div>
+
+    
+            <!-- Password field -->
+            <div>
+                {{ form.password.label_tag }}
+                {{ form.password }}
+                {% if form.password.errors %}
+                    <div class="error-message">
+                        {{ form.password.errors|striptags }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- Confirm Password field -->
+            <div>
+                {{ form.confirm_password.label_tag }}
+                {{ form.confirm_password }}
+                {% if form.confirm_password.errors %}
+                    <div class="error-message">
+                        {{ form.confirm_password.errors|striptags }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- Show password -->
+            <div class="show-password">
+                <input type="checkbox" id="showPassword" onclick="togglePassword()"> Show Password
+            </div>
+
+            <!-- Role field -->
+            <div>
+                {{ form.role.label_tag }}
+                {{ form.role }}
+                {% if form.role.errors %}
+                    <div class="error-message">
+                        {{ form.role.errors|striptags }}
+                    </div>
+                {% endif %}
+            </div>
+
+
+            <!-- Submit button -->
+            <button type="submit">Sign Up</button>
+
+            <!-- Login link -->
+            <p>Already have an account? <a href="{% url 'login' %}">Login</a></p>
+        </form>
+    </div>
+
+    <script>
+        function togglePassword() {
+            const passwordInput = document.querySelector('input[name="password"]');
+            const confirmPasswordInput = document.querySelector('input[name="confirm_password"]');
+            if (document.getElementById('showPassword').checked) {
+                passwordInput.type = 'text';
+                confirmPasswordInput.type = 'text';
+            } else {
+                passwordInput.type = 'password';
+                confirmPasswordInput.type = 'password';
+            }
+        }
+
+        // Validate form on submission
+        document.getElementById('signupForm').addEventListener('submit', function(event) {
+            let isValid = true;
+
+            // Clear previous error messages
+            document.querySelectorAll('.error-message').forEach(el => el.textContent = '');
+
+            // Validate name
+            const name = document.getElementById('id_name').value;
+            if (!name) {
+                document.querySelector('#id_name').nextElementSibling.textContent = 'Name is required.';
+                isValid = false;
+            }
+
+            // Validate email
+            const email = document.getElementById('id_email').value;
+            if (!email) {
+                document.querySelector('#id_email').nextElementSibling.textContent = 'Email is required.';
+                isValid = false;
+            } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                document.querySelector('#id_email').nextElementSibling.textContent = 'Enter a valid email address.';
+                isValid = false;
+            }
+
+            // Validate password
+            const password = document.getElementById('id_password').value;
+            const passwordErrorElement = document.querySelector('#id_password').nextElementSibling;
+
+            if (!password) {
+                passwordErrorElement.textContent = 'Password is required.';
+                isValid = false;
+            } else if (password.length < 6) {
+                passwordErrorElement.textContent = 'Password must be at least 6 characters.';
+                isValid = false;
+            }
+
+            // Validate confirm password
+            const confirmPassword = document.getElementById('id_confirm_password').value;
+            const confirmPasswordErrorElement = document.querySelector('#id_confirm_password').nextElementSibling;
+
+            if (!confirmPassword) {
+                confirmPasswordErrorElement.textContent = 'Confirm Password is required.';
+                isValid = false;
+            } else if (password !== confirmPassword) {
+                confirmPasswordErrorElement.textContent = 'Passwords do not match.';
+                isValid = false;
+            }
+
+            // Prevent form submission if validation fails
+            if (!isValid) {
+                event.preventDefault();
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Progress Tracker</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f2f5;
+            color: #333;
+        }
+        header {
+            background: linear-gradient(135deg, #2196F3, #1976D2);
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        .table-container, .chart-container {
+            margin: 30px auto;
+            width: 90%;
+            max-width: 1200px;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        .table-container:hover, .chart-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        }
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-bottom: 0;
+        }
+        table th, table td {
+            padding: 15px;
+            border: none;
+            text-align: left;
+        }
+        table th {
+            background: linear-gradient(135deg, #2196F3, #1976D2);
+            color: white;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        table tbody tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        table tbody tr:hover {
+            background-color: #E3F2FD;
+            transition: background-color 0.3s ease;
+        }
+        .chart-container {
+            padding: 30px;
+        }
+        .chart-container h2, .table-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #1565C0;
+            font-size: 1.8rem;
+        }
+        canvas {
+            width: 100%;
+            max-height: 400px;
+        }
+        @media (max-width: 768px) {
+            .table-container, .chart-container {
+                width: 95%;
+            }
+            table th, table td {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Employee Progress Tracker</h1>
+    </header>
+
+    <div class="table-container">
+        <h2 style="text-align:center;">Detailed Employee Progress</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Employee Name</th>
+                    <th>Course Name</th>
+                    <th>Progress (%)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for progress in progress_data %}
+                <tr>
+                    <td>{{ progress.employee.name }}</td>
+                    <td>{{ progress.course.title }}</td>
+                    <td>{{ progress.progress_percentage }}%</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="chart-container">
+        <h2>All Employees' Progress</h2>
+        <canvas id="progressChart"></canvas>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const ctx = document.getElementById('progressChart').getContext('2d');
+        const data = {
+            labels: {{ courses|safe }},
+            datasets: [
+                {% for employee, dataset in chart_data.items %}
+                {
+                    label: "{{ employee }}",
+                    data: {{ dataset|safe }},
+                    backgroundColor: "rgba(75, 192, 192, 0.6)",
+                    borderColor: "rgba(75, 192, 192, 1)",
+                    borderWidth: 1
+                },
+                {% endfor %}
+            ]
+        };
+
+        const config = {
+            type: 'bar',
+            data: data,
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Progress (%)'
+                        }
+                    }
+                }
+            }
+        };
+
+        new Chart(ctx, config);
+    </script>
+</body>
+</html>

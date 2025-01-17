@@ -1,0 +1,187 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #34495e;
+            --accent-color: #e74c3c;
+            --background-color: #f8f9fa;
+            --text-color: #333;
+            --light-text-color: #6c757d;
+            --card-background: #ffffff;
+            --card-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            background-color: var(--background-color);
+            font-family: 'Poppins', sans-serif;
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 50px auto;
+            padding: 30px;
+            background-color: var(--card-background);
+            border-radius: 15px;
+            box-shadow: var(--card-shadow);
+        }
+
+        .course-header h1 {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .course-header p {
+            color: var(--light-text-color);
+            margin-top: 15px;
+            font-size: 1.2rem;
+            text-align: center;
+        }
+
+        .progress-container {
+            margin: 40px 0;
+        }
+
+        .progress-container .progress {
+            height: 30px;
+            border-radius: 50px;
+            background-color: #e9ecef;
+            overflow: hidden;
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .progress-container .progress-bar {
+            font-weight: bold;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            text-shadow: 1px 1px 1px rgba(0,0,0,0.3);
+        }
+
+        .modules-section h3 {
+            color: var(--secondary-color);
+            margin-bottom: 30px;
+            font-weight: 600;
+            text-align: center;
+            font-size: 2.2rem;
+            position: relative;
+        }
+
+        .modules-section h3::after {
+            content: '';
+            display: block;
+            width: 50px;
+            height: 3px;
+            background-color: var(--accent-color);
+            margin: 10px auto 0;
+        }
+
+        .module-item {
+            border-radius: 15px;
+            margin-bottom: 25px;
+            box-shadow: var(--card-shadow);
+            transition: var(--transition);
+            border: none;
+            overflow: hidden;
+        }
+
+        .module-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .module-info h5 {
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .module-info p {
+            color: var(--light-text-color);
+            font-size: 1rem;
+        }
+
+        .resources {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #e9ecef;
+        }
+
+        .resources p {
+            font-weight: 600;
+            color: var(--secondary-color);
+            margin-bottom: 10px;
+        }
+
+        .embed-responsive {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-outline-secondary {
+            color: var(--secondary-color);
+            border-color: var(--secondary-color);
+            transition: var(--transition);
+        }
+
+        .btn-outline-secondary:hover {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+
+        .mark-complete-form button {
+            border-radius: 50px;
+            padding: 8px 20px;
+            font-weight: 600;
+            transition: var(--transition);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .mark-complete-form button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .btn-primary:hover {
+            background-color: #3a7bd5;
+            border-color: #3a7bd5;
+        }
+
+        .btn-success {
+            background-color: #2ecc71;
+            border-color: #2ecc71;
+        }
+
+        .btn-success:hover {
+            background-color: #27ae60;
+            border-color: #27ae60;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            .course-header h1 {
+                font-size: 2.5rem;
+            }
+
+            .modules-section h3 {
+                font-size: 2rem;
+            }
+        }

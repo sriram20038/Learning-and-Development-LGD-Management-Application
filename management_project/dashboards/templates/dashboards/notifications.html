@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notifications</title>
+    <link rel="stylesheet" href="{% static 'css/notifications.css' %}?v=1.0">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Unread Notifications</h1>
+            <a href="{% url 'mark_all_as_read' user_id %}" class="mark-all-btn">Mark All as Read</a>
+        </header>
+        <main>
+            {% if notifications %}
+                {% for notification in notifications %}
+                    <div class="notification-card">
+                        <h2>{{ notification.title }}</h2>
+                        <p>{{ notification.message }}</p>
+                        <small>Created at: {{ notification.created_at }}</small>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p class="no-notifications">You have no unread notifications.</p>
+            {% endif %}
+        </main>
+    </div>
+</body>
+</html>
